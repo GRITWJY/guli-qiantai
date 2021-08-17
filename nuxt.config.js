@@ -1,4 +1,12 @@
 module.exports = {
+
+	plugins: [
+		{src:'~/plugins/nuxt-swiper-plugin.js',ssr:false}
+	],
+	css:[
+		'swiper/dist/css/swiper.css'
+	],
+
   /*
   ** Headers of the page
   */
@@ -11,7 +19,7 @@ module.exports = {
     ],
     link: [
       { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
-    ]
+    ],
   },
   /*
   ** Customize the progress bar color
@@ -30,10 +38,12 @@ module.exports = {
           enforce: 'pre',
           test: /\.(js|vue)$/,
           loader: 'eslint-loader',
-          exclude: /(node_modules)/
+          exclude: /(node_modules)/,
+	        options: { fix: true }
         })
       }
     }
+
   }
 }
 
