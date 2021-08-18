@@ -1,17 +1,11 @@
 <template>
-
   <div>
     <!-- 幻灯片 开始 -->
     <div v-swiper:mySwiper="swiperOption">
       <div class="swiper-wrapper">
-        <div  class="swiper-slide" style="background: #040B1B;">
-          <a target="_blank" href="/">
-            <img src="../assets/photo/banner/1525939573202.jpg" alt="首页">
-          </a>
-        </div>
-        <div  class="swiper-slide" style="background: #040B1B;">
-          <a target="_blank" href="/">
-            <img src="../assets/photo/banner/1525939573202.jpg" alt="首页">
+        <div v-for="banner in bannerList" :key="banner.id" class="swiper-slide" style="background: #040B1B;">
+          <a target="_blank">
+            <img :src="banner.imageUrl" :alt="banner.title">
           </a>
         </div>
       </div>
@@ -258,6 +252,7 @@
   </div>
 </template>
 <script>
+import banner from "@/utils/banner";
 export default {
   data(){
     return{
@@ -270,8 +265,21 @@ export default {
           nextEl:'.swiper-button-next',
           prevEl:'.swiper-button-prev'
         }
-      }
+      },
+      bannerList:[],
     }
+  },
+  methods:{
+    //查询banner数据
+    getBannerList(){
+      banner.getListBanner().then(res=>{
+        this.bannerList = res.data.data.list
+      })
+    },
+
+  },
+  created() {
+    this.getBannerList()
   }
 }
 </script>
