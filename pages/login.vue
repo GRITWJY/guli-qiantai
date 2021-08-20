@@ -44,6 +44,9 @@
 import '~/assets/css/sign.css'
 import '~/assets/css/iconfont.css'
 import registerApi from "@/api/register";
+import cookie from 'js-cookie'
+
+
 export default {
   layout: 'sign',
 
@@ -66,7 +69,17 @@ export default {
       return callback()
     },
     submitLogin(){
-
+      registerApi.loginMember(this.user)
+        .then(res=>{
+          cookie.set('guli_token',res.data.data.token,{domain:'localhost'})
+          registerApi.getMemberInfo().then(response=>{
+            this.loginInfo = response.data.data.userInfo
+            console.log(this.loginInfo)
+            cookie.set('guli_ucenter',JSON.stringify(this.loginInfo),{domain:'localhost'})
+            // window.location.href = "/";
+            this.$router.push({path:'/'})
+          })
+        })
     }
   }
 }
