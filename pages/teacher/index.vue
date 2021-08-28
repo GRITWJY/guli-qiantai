@@ -87,8 +87,21 @@
 </template>
 
 <script>
+import teacher from "@/api/teacher";
 export default {
-name: "index"
+  //params 相当于this.$route.params
+  asyncData({params,error}) {
+    return teacher.getTeacherList(1,8).then(res=>{
+      return {data:res.data.data}
+    })
+  },
+  methods:{
+    gotoPage(page){
+      teacher.getTeacherList(page,8).then(res=>{
+        this.data = res.data.data
+      })
+    }
+  }
 }
 </script>
 

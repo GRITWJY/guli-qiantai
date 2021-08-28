@@ -55,7 +55,7 @@
                 >
                 <span id="userName" class="vam disIb">{{loginInfo.nickname}}</span>
               </a>
-              <a href="javascript:void(0);" title="退出" @click="exit()" class="ml5">退出</a>
+              <a href="javascript:void(0);" title="退出" @click="logout" class="ml5">退出</a>
             </li>
             <!-- /未登录显示第1 li；登录后显示第2，3 li -->
           </ul>
@@ -134,6 +134,13 @@ import '~/assets/css/reset.css'
 import '~/assets/css/theme.css'
 import '~/assets/css/global.css'
 import '~/assets/css/web.css'
+import '~/assets/css/base.css'
+import '~/assets/css/activity_tab.css'
+import '~/assets/css/bottom_rec.css'
+import '~/assets/css/nice_select.css'
+import '~/assets/css/order.css'
+import '~/assets/css/swiper-3.3.1.min.css'
+import "~/assets/css/pages-weixinpay.css"
 
 import cookie from "js-cookie";
 
@@ -162,6 +169,12 @@ export default {
       if (userStr) {
         this.loginInfo = JSON.parse(userStr)
       }
+    },
+    logout(){
+      //清空cookie值
+      cookie.set('guli_token','',{domain:'localhost'})
+      cookie.set('guli_ucenter','',{domain:'localhost'})
+      this.$router.push({path:"/"})
     }
   },
 }

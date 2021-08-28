@@ -143,11 +143,122 @@
 </template>
 
 <script>
+import courseApi from "@/api/course";
+
 export default {
-name: "index"
+  data(){
+    return {
+      page:1,
+      data:{},
+      subjectNestedList:[],
+      subSubjectList:[],
+      searchObj:{
+        title:""
+      },
+      oneIndex:-1,
+      twoIndex:-1,
+      buyCountSort:"",
+      gmtCreateSort:"",
+      priceSort:""
+
+    }
+  },
+
+  created() {
+    this.initCourseFirst()
+    this.initSubject()
+  },
+
+  methods:{
+    // 1. 查询第一页数据
+    initCourseFirst() {
+      courseApi.getCourseList(1,8, this.searchObj).then(res=>{
+        this.data = res.data.data
+      })
+    },
+
+    initSubject(){
+      courseApi.getAllsubject()
+        .then(res=>{
+          this.subjectNestedList = res.data.data.list
+        })
+    },
+
+    gotoPage(page){
+      courseApi.getCourseList(page,8, this.searchObj).then(res=>{
+        this.data = res.data.data
+      })
+    },
+
+    searchOne(subjectParentId, index){
+
+      this.oneIndex = index
+      this.searchObj.subjectParentId = subjectParentId
+      this.searchObj.subjectId =""
+      this.subSubjectList = []
+      this.twoIndex = -1
+      this.gotoPage(1)
+
+
+      for (let i=0; i<this.subjectNestedList.length;i++){
+        var oneSubject = this.subjectNestedList[i]
+        if (oneSubject.id == subjectParentId){
+          this.subSubjectList = oneSubject.children
+        }
+      }
+    },
+    searchTwo(subjectId, index){
+      this.twoIndex = index
+      this.searchObj.subjectId = subjectId
+      this.gotoPage(1)
+
+    },
+    searchBuyCount(){
+      this.buyCountSort = 1
+      this.gmtCreateSort = ""
+      this.priceSort = ""
+      this.searchObj.buyCountSort = 1
+      this.searchObj.gmtCreateSort = ""
+      this.searchObj.priceSort = ""
+      this.gotoPage(1)
+    },
+    searchGmtCreate(){
+      this.buyCountSort = ""
+      this.gmtCreateSort = 1
+      this.priceSort = ""
+      this.searchObj.buyCountSort = ""
+      this.searchObj.gmtCreateSort = 1
+      this.searchObj.priceSort = ""
+      this.gotoPage(1)
+    },
+    searchPrice(){
+      this.buyCountSort = ""
+      this.gmtCreateSort = ""
+      this.priceSort = 1
+      this.searchObj.buyCountSort = ""
+      this.searchObj.gmtCreateSort = ""
+      this.searchObj.priceSort = 1
+      this.gotoPage(1)
+    }
+  },
+
+
+
+
+
+
+
 }
 </script>
 
 <style scoped>
-
+.active{
+  background: #bdbdbd;
+}
+.hide{
+  display: none;
+}
+.show{
+  display: block;
+}
 </style>

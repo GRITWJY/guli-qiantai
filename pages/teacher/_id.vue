@@ -72,8 +72,20 @@
 </template>
 
 <script>
+import teacherApi from "@/api/teacher";
+import teacher from "@/api/teacher";
+
 export default {
-name: "_id"
+
+  asyncData({params,error}) {
+    return teacherApi.getTeacherInfo(params.id).then(res=>{
+      return{
+        teacher: res.data.data.teacher,
+        courseList: res.data.data.courseList
+
+      }
+    })
+  },
 }
 </script>
 
